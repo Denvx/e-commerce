@@ -89,6 +89,8 @@ void loguin(LoguinUsuario usuario){
 }
 void cadastrarUsuario(CadastroUsuario cliente){
 	int numDigit;
+    char arroba = 0;
+    
 	printf("Vamos fazer seu cadastro\n");
 	printf("Me informa seu nome: ");
 	scanf("%s", cliente.nome);
@@ -112,7 +114,6 @@ void cadastrarUsuario(CadastroUsuario cliente){
 		}
 	}while(numDigit != 11);
 	do{
-		char arroba = 0;
 		printf("Email: ");
 		scanf("%s", cliente.email);
 		
@@ -173,7 +174,7 @@ int main(){
 	LoguinUsuario usuario;
 	strcpy(admin.email, "admin@gmail.com");
 	strcpy(admin.senha, "12345678");
-	while(true){
+	while(1){
 		primeiraTela();
 		int resposta = entrada();
 		controle(resposta, admin, usuario);
