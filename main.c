@@ -88,7 +88,7 @@ void loguin(LoguinUsuario usuario){
 	}
 }
 void cadastrarUsuario(CadastroUsuario cliente){
-	int numDigit;
+	int numDigit, numSenha;
     char arroba = 0;
     
 	printf("Vamos fazer seu cadastro\n");
@@ -127,9 +127,22 @@ void cadastrarUsuario(CadastroUsuario cliente){
 			}
     }
 	}while (arroba != 1);
-	printf("Senha: ");
-	scanf("%s", cliente.senha);
-	
+	do {
+  		printf("Senha (máximo 14 dígitos): ");
+  		scanf("%s", cliente.senha);
+    	  numSenha = strlen(cliente.senha);
+		if(numSenha > 14) {
+    	    printf("Ultrapassou a quantidade de dígitos permitido (maximi 14 digitos)!\n");
+   		    system("pause");
+    	    system("cls");
+    	  }else if (numSenha < 8){
+    	    printf("A senha tem que ter no mínimo 8 dígitos, tente novamente !\n");
+    	    system("pause");
+     	   system("cls");
+      	}else{
+    		 printf("Senha cadastrada!");
+    	}
+	}while (numSenha < 8 && numSenha > 14);
 }
 void controle(int resposta, LoguinAdmin admin, LoguinUsuario usuario){
 	switch (resposta){
