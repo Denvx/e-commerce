@@ -13,7 +13,7 @@ typedef struct{
 	char nome[30];
 	char email[30];
 	char senha[15];
-	char cpf [11];
+	char cpf [12];
 	char endereco[100];
 	char numeroTelefone[11];
 }CadastroUsuario;
@@ -23,19 +23,28 @@ typedef struct{
 	char senha[15];
 }LoguinUsuario;
 
-void clearBuffer() {  
+void clearBuffer() {      // Função para apagar  os buffer de memoria
     int c;  
-    // Lê até a nova linha ou EOF  
     while ((c = getchar()) != '\n' && c != EOF);  
 } 
-int entrada(){
+int entrada(){ //Função de entradas
 	int resposta;
 	printf("escolha:");
 	scanf("%d", &resposta);
 	clearBuffer();
 	return resposta;
 }
-void primeiraTela(){
+int verificarCpf(CadastroUsuario cliente){ //Essa função vai verificar se os cpf digitado é so numeros
+	int entryCpf;
+	entryCpf = strlen(cliente.cpf);
+	for(int i = 0; i < entryCpf; i++){
+		if(cliente.cpf[i] < '0' || cliente.cpf[i] > '9') {
+			return 0;
+		}
+	}
+	return 1;	
+}
+void primeiraTela(){ //Tela inicial
 	printf("Olá, seja bem vindo ao hortifrut da Bet\n");
 	printf("[1] Fazer loguin\n");
 	printf("[2] Se cadastrar\n");
@@ -43,7 +52,7 @@ void primeiraTela(){
 	printf("[4] Nos conhecer\n");
 	printf("[5] Sair\n");	
 }
-void loguinAdmin(LoguinAdmin admin){
+void loguinAdmin(LoguinAdmin admin){ //função que faz  o  loguin administrativo
 	char loguinEmail[30], loguinSenha[15];
 	
 	printf(" Sejá bem vindo AIMINISTRADOR \n");
@@ -61,10 +70,10 @@ void loguinAdmin(LoguinAdmin admin){
 		printf("Email ou senha incorretos\n");
 	}
 }
-void loguin(LoguinUsuario usuario){
+void loguin(LoguinUsuario usuario){ //função que faz  o  loguin do ususario
 	char loguinEmail[30], loguinSenha[15];
 	
-	if(usuariosCadastrados == 0){
+	if(usuariosCadastrados == 0){ //verifica se te ususarios cadastrados, se nao estiver, volta para o loop
 		printf("Não temos nem um cadastro no nosso banco de dados!\n");
 		printf("se cadastre e retorne.\n");
 		system("pause");
@@ -87,20 +96,30 @@ void loguin(LoguinUsuario usuario){
 		}
 	}
 }
-void cadastrarUsuario(CadastroUsuario cliente){
-	int numDigit, numSenha;
-    char arroba = 0;
+void cadastrarUsuario(CadastroUsuario cliente){	//Essa é a função de cadastrar usuarios
+	
+    char arroba = 0,numDigit, numSenha, numCpf;;
     
 	printf("Vamos fazer seu cadastro\n");
 	printf("Me informa seu nome: ");
 	scanf("%s", cliente.nome);
-	printf("CPF(SÓ NUMEROS): ");
-	scanf("%d", cliente.cpf);
+	do{	
+		printf("CPF(SÓ NUMEROS): "); 
+		scanf("%s", cliente.cpf);
+		numCpf = strlen(cliente.cpf);
+		verificarCpf(cliente);// Função para validar se o cpf so contem numeros.
+		if(numCpf > 11){
+			printf("Cpf invalido (esperando 11 digitos)\nTente novamente!\n\n");
+			system("pause");
+			system("cls");
+		}
+	}while (numCpf < 11 || numCpf > 11);
+
 	printf("Endereço: ");
 	scanf("%s", cliente.endereco);
 	do{
 		printf("Numero (11 digitos): ");
-		scanf("%d", cliente.numeroTelefone);
+		scanf("%s", cliente.numeroTelefone);
 		
 		numDigit = strlen(cliente.numeroTelefone); //obtenho o tamanho da streing com 'strlen'
 		if(numDigit > 11) {
@@ -130,9 +149,10 @@ void cadastrarUsuario(CadastroUsuario cliente){
 	do {
   		printf("Senha (máximo 14 dígitos): ");
   		scanf("%s", cliente.senha);
+		clearBuffer();
     	  numSenha = strlen(cliente.senha);
 		if(numSenha > 14) {
-    	    printf("Ultrapassou a quantidade de dígitos permitido (maximi 14 digitos)!\n");
+    	    printf("Ultrapassou a quantidade de dígitos permitido (maximo, 14 digitos)!\n");
    		    system("pause");
     	    system("cls");
     	  }else if (numSenha < 8){
@@ -144,15 +164,13 @@ void cadastrarUsuario(CadastroUsuario cliente){
     	}
 	}while (numSenha < 8 && numSenha > 14);
 }
-void controle(int resposta, LoguinAdmin admin, LoguinUsuario usuario){
+void controle(int resposta, LoguinAdmin admin, LoguinUsuario usuario, CadastroUsuario cliente){
 	switch (resposta){
 		case 1:
 			loguin(usuario);
 			break;
 		case 2:
-			printf("Case 2\n");
-			system("pause");
-			system("cls");
+			cadastrarUsuario(cliente);
 			break;
 		case 3:
 			printf("Case 3\n");
@@ -185,11 +203,12 @@ int main(){
 	setlocale(LC_ALL,"portuguese");
 	LoguinAdmin admin;
 	LoguinUsuario usuario;
+	CadastroUsuario cliente;
 	strcpy(admin.email, "admin@gmail.com");
 	strcpy(admin.senha, "12345678");
 	while(1){
 		primeiraTela();
 		int resposta = entrada();
-		controle(resposta, admin, usuario);
+		controle(resposta, admin, usuario, cliente);
 	}
 }
