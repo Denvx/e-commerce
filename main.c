@@ -22,7 +22,10 @@ typedef struct{
 	char email[30];
 	char senha[15];
 }LoguinUsuario;
-
+void systens(){
+	system("pause");
+  system("cls");
+}
 void clearBuffer() {      // Função para apagar  os buffer de memoria
     int c;  
     while ((c = getchar()) != '\n' && c != EOF);  
@@ -76,91 +79,101 @@ void loguin(LoguinUsuario usuario){ //função que faz  o  loguin do ususario
 	if(usuariosCadastrados == 0){ //verifica se te ususarios cadastrados, se nao estiver, volta para o loop
 		printf("Não temos nem um cadastro no nosso banco de dados!\n");
 		printf("se cadastre e retorne.\n");
-		system("pause");
-		system("cls");
+		systens();
 	}else {
 		printf("Tela de loguin\n");
 		printf("Email: ");
 		scanf("%s", &loguinEmail);
+		clearBuffer();
 		
 		fflush(stdin);
 		printf("Senha: ");
 		scanf("%s", &loguinSenha);
 		fflush(stdin);
+		clearBuffer();
 		
 		if (strcmp(loguinEmail, usuario.email) == 0 && strcmp(loguinSenha, usuario.senha) == 0 ){
 			printf("CHAMO O QUE O USUARIO PODE FAZER AQUI!\n");
 		}else{
-			printf("Email ou senha incorretos\n");
-			system("pause");
+			printf("Email ou senha incorretos\nTente novamente...");
+			systens();
 		}
 	}
 }
 void cadastrarUsuario(CadastroUsuario cliente){	//Essa é a função de cadastrar usuarios
-	
-    char arroba = 0,numDigit, numSenha, numCpf;;
+	char arroba = 0,numDigit, numSenha, numCpf;;
     
 	printf("Vamos fazer seu cadastro\n");
 	printf("Me informa seu nome: ");
 	scanf("%s", cliente.nome);
 	do{	
-		printf("CPF(SÓ NUMEROS): "); 
+		printf("CPF(SÓ NUMEROS): ");
 		scanf("%s", cliente.cpf);
+		
+		clearBuffer();
 		numCpf = strlen(cliente.cpf);
+		
 		verificarCpf(cliente);// Função para validar se o cpf so contem numeros.
-		if(numCpf > 11){
-			printf("Cpf invalido (esperando 11 digitos)\nTente novamente!\n\n");
-			system("pause");
-			system("cls");
+		if(numCpf < 11) {
+      printf("Está faltando digito, tente novamente!\n");
+      systens();
+    } else if (numCpf > 11) {
+      printf("Quantidade de digitos ultrapassada!\n");
+      systens();
+		}else {
+			printf("CPF validado!.\n");
 		}
-	}while (numCpf < 11 || numCpf > 11);
+		
+	}while (numCpf != 11);
 
 	printf("Endereço: ");
 	scanf("%s", cliente.endereco);
-	do{
-		printf("Numero (11 digitos): ");
-		scanf("%s", cliente.numeroTelefone);
-		
-		numDigit = strlen(cliente.numeroTelefone); //obtenho o tamanho da streing com 'strlen'
-		if(numDigit > 11) {
-			printf("Quantidade de digitos ultrapaçada!\n");
-			system("pause");
-			system("cls");
-		}else {
-			printf("Está faltando digito, tente novamente!\n");
-			system("pause");
-			system("cls");
-		}
-	}while(numDigit != 11);
+	clearBuffer();
+	do {
+    printf("Numero (11 digitos): ");
+    scanf("%11s", cliente.numeroTelefone); // Limitar a entrada a 11 caracteres
+        
+    clearBuffer();
+    numDigit = strlen(cliente.numeroTelefone);
+
+    if(numDigit < 11) {
+      printf("Está faltando digito, tente novamente!\n");
+      systens();
+    } else if (numDigit > 11) {
+      printf("Quantidade de digitos ultrapassada!\n");
+      systens();
+    } else {
+      printf("Número Validado!\n");
+      systens();
+    }
+  } while(numDigit != 11);
 	do{
 		printf("Email: ");
 		scanf("%s", cliente.email);
+		clearBuffer();
 		
 		for (int i = 0; i < strlen(cliente.email); i++) {  
       if (cliente.email[i] == '@') {  
-          arroba = 1; // Setar flag se '@' for encontrado       
-      } else {
-        printf("Este email é invalido!\n");
-        system("pause");
-        system("cls");
-			}
+        arroba = 1; // Setar flag se '@' for encontrado       
+      }
+      printf("Este email é invalido!\n");
+      systens();
     }
 	}while (arroba != 1);
 	do {
-  		printf("Senha (máximo 14 dígitos): ");
-  		scanf("%s", cliente.senha);
+  	printf("Senha (máximo 14 dígitos): ");
+  	scanf("%s", cliente.senha);
 		clearBuffer();
-    	  numSenha = strlen(cliente.senha);
+    numSenha = strlen(cliente.senha);
 		if(numSenha > 14) {
     	    printf("Ultrapassou a quantidade de dígitos permitido (maximo, 14 digitos)!\n");
-   		    system("pause");
-    	    system("cls");
+   		    systens();
     	  }else if (numSenha < 8){
-    	    printf("A senha tem que ter no mínimo 8 dígitos, tente novamente !\n");
-    	    system("pause");
-     	   system("cls");
+    	  	printf("A senha tem que ter no mínimo 8 dígitos, tente novamente !\n");
+    	  	systens();
       	}else{
-    		 printf("Senha cadastrada!");
+    			printf("Senha cadastrada!");
+    			systens();
     	}
 	}while (numSenha < 8 && numSenha > 14);
 }
@@ -174,28 +187,25 @@ void controle(int resposta, LoguinAdmin admin, LoguinUsuario usuario, CadastroUs
 			break;
 		case 3:
 			printf("Case 3\n");
-			system("pause");
-			system("cls");
+			systens();
 			break;
 		case 4:
 			printf("Case 4\n");
-			system("pause");
-			system("cls");
+			systens();
 			break;
 		case 5:
 			printf("Sua presença foi exencial, Obrigado!\n");
 			exit(1);
-			system("pause");
+			systens();
 			break;
 		case 12345678:
 			printf("  LOGUIN ADMINISTRATIVO  \n");
 			loguinAdmin(admin);
-			system("pause");
+			systens();
 			break;
 			default:
 				printf("Opção desconheccida!\n");
-				system("pause");
-				system("cls");
+				systens();
 				break;
 	}
 }
