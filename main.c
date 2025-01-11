@@ -77,7 +77,15 @@ void loguinAdmin(LoguinAdmin admin){ //função que faz  o  loguin administrativ
 	fflush(stdin);
 		
 	if (strcmp(loguinEmail, admin.email) == 0 && strcmp(loguinSenha, admin.senha) == 0 ){
-		printf("CHAMO O QUE O ADM PODE FAZER AQUI!\n");
+		//printf("CHAMO O QUE O ADM PODE FAZER AQUI!\n");
+		printf("[1] Adicionar produtos\n");
+		printf("[2] Gerenciamento de Usuários\n");
+		printf("[3] Listar usuarios\n");
+		printf("[4] Reclamações\n");
+		printf("[5] Gestão de Pedidos\n");
+		printf("[6] Relatorio semanal\n");
+		printf("[7] Sair\n");
+		systens():
 	}else{
 		printf("Email ou senha incorretos\n");
 	}
